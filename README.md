@@ -12,6 +12,7 @@ Each project directory contains a student-facing `starter/` implementation and a
 - `CPPI0-Warnings-and-Debugger-Notebook`: Warnings and Debugger Notebook
 - `CPPI1-Saveable-Task-Manager`: Saveable Task Manager
 - `CPPI1-Import-and-Reject-Bad-Rows`: Import and Reject Bad Rows
+- `CPPI1-Mini-Command-Scanner`: Mini Command Scanner
 - `CPPI2-Recursive-Maze-Search`: Recursive Maze Search
 - `CPPI2-Recursion-Trace-Drill`: Recursion Trace Drill
 - `CPPI3-Inventory-Indexer`: Inventory Indexer

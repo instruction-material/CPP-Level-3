@@ -21,6 +21,8 @@ add_course_executable(task_manager_starter CPPI1-Saveable-Task-Manager/starter/m
 add_course_executable(task_manager_solution CPPI1-Saveable-Task-Manager/solution/main.cpp)
 add_course_executable(bad_rows_starter CPPI1-Import-and-Reject-Bad-Rows/starter/main.cpp)
 add_course_executable(bad_rows_solution CPPI1-Import-and-Reject-Bad-Rows/solution/main.cpp)
+add_course_executable(command_scanner_starter CPPI1-Mini-Command-Scanner/starter/main.cpp)
+add_course_executable(command_scanner_solution CPPI1-Mini-Command-Scanner/solution/main.cpp)
 add_course_executable(maze_search_starter CPPI2-Recursive-Maze-Search/starter/main.cpp)
 add_course_executable(maze_search_solution CPPI2-Recursive-Maze-Search/solution/main.cpp)
 add_course_executable(trace_drill_starter CPPI2-Recursion-Trace-Drill/starter/main.cpp)
