@@ -6,6 +6,30 @@
 #include <string>
 #include <vector>
 
+
+/*****************
+*   CONSTANTS   *
+*****************/
+
+constexpr int DEBUG_CABLE_ID = 101;
+constexpr int SENSOR_KIT_ID = 102;
+constexpr int HEX_DRIVER_ID = 103;
+constexpr int BREADBOARD_ID = 104;
+constexpr int DEBUG_CABLE_QUANTITY = 6;
+constexpr int SENSOR_KIT_QUANTITY = 3;
+constexpr int HEX_DRIVER_QUANTITY = 10;
+constexpr int BREADBOARD_QUANTITY = 8;
+constexpr int DUPLICATE_QUANTITY = 1;
+const std::string TOOLS_CATEGORY = "tools";
+const std::string ELECTRONICS_CATEGORY = "electronics";
+const std::string LAB_CATEGORY = "lab";
+
+
+/*************
+*   TYPES   *
+*************/
+
+// Store one inventory item row
 struct Item {
 	int id;
 	std::string name;
@@ -13,40 +37,80 @@ struct Item {
 	int quantity;
 };
 
+// Index inventory rows by id and category
 class InventoryIndex {
 public:
+	/**
+	 * @brief Add one item when its id is not already present
+	 *
+	 * @param item Item to add
+	 *
+	 * @return True when the item is accepted
+	 */
 	bool add(const Item& item) {
-		if (idToIndex_.count(item.id) > 0) {
+		// Reject duplicate item ids
+		if (id_to_index_.count(item.id) > 0) {
 			return false;
 		}
 
-		idToIndex_[item.id] = items_.size();
+		id_to_index_[item.id] = items_.size();
 		categories_.insert(item.category);
 		items_.push_back(item);
 		return true;
 	}
 
-	std::vector<Item> selectCategory(const std::string& category) const {
+	/**
+	 * @brief Select all items in one category
+	 *
+	 * @param category Category to select
+	 *
+	 * @return Items that match the category
+	 */
+	std::vector<Item> select_category(const std::string& category) const {
 		std::vector<Item> selected;
+
+		// Copy every row in the requested category
 		for (const Item& item : items_) {
 			if (item.category == category) {
 				selected.push_back(item);
 			}
 		}
+
 		return selected;
 	}
 
-	std::vector<std::string> projectNames(const std::vector<Item>& rows) const {
+	/**
+	 * @brief Project item names from selected rows
+	 *
+	 * @param rows Rows to project
+	 *
+	 * @return Sorted item names
+	 */
+	std::vector<std::string> project_names(const std::vector<Item>& rows) const {
 		std::vector<std::string> names;
+
+		// Collect names from every provided row
 		for (const Item& item : rows) {
 			names.push_back(item.name);
 		}
+
 		std::sort(names.begin(), names.end());
 		return names;
 	}
 
-	bool renameCategory(const std::string& from, const std::string& to) {
+	/**
+	 * @brief Rename one category across the inventory
+	 *
+	 * @param from Category name to replace
+	 *
+	 * @param to Replacement category name
+	 *
+	 * @return True when at least one item changed
+	 */
+	bool rename_category(const std::string& from, const std::string& to) {
 		bool changed = false;
+
+		// Update every item that belongs to the source category
 		for (Item& item : items_) {
 			if (item.category == from) {
 				item.category = to;
@@ -54,17 +118,30 @@ public:
 			}
 		}
 
+		// Rebuild category lookup only when a rename happened
 		if (changed) {
-			rebuildCategoryIndex();
+			rebuild_category_index();
 		}
+
 		return changed;
 	}
 
-	std::vector<std::string> joinSuppliers(const std::map<int, std::string>& supplierById) const {
+	/**
+	 * @brief Join inventory rows with supplier names by id
+	 *
+	 * @param supplier_by_id Supplier lookup keyed by item id
+	 *
+	 * @return Joined display rows
+	 */
+	std::vector<std::string> join_suppliers(const std::map<int, std::string>& supplier_by_id) const {
 		std::vector<std::string> joined;
+
+		// Build one joined row for each item with a known supplier
 		for (const Item& item : items_) {
-			const auto supplier = supplierById.find(item.id);
-			if (supplier == supplierById.end()) {
+			const auto supplier = supplier_by_id.find(item.id);
+
+			// Skip items that do not have supplier data
+			if (supplier == supplier_by_id.end()) {
 				continue;
 			}
 
@@ -72,58 +149,97 @@ public:
 			row << item.id << " | " << item.name << " | " << item.quantity << " | " << supplier->second;
 			joined.push_back(row.str());
 		}
+
 		return joined;
 	}
 
-	void printCategories() const {
+	/**
+	 * @brief Print all known categories
+	 */
+	void print_categories() const {
 		std::cout << "Categories:";
+
+		// Print categories in set order
 		for (const std::string& category : categories_) {
 			std::cout << ' ' << category;
 		}
+
 		std::cout << "\n";
 	}
 
 private:
-	void rebuildCategoryIndex() {
+	// Rebuild the category set from current items
+	void rebuild_category_index() {
 		categories_.clear();
+
+		// Insert each current item category
 		for (const Item& item : items_) {
 			categories_.insert(item.category);
 		}
 	}
 
 	std::vector<Item> items_;
-	std::map<int, std::size_t> idToIndex_;
+	std::map<int, std::size_t> id_to_index_;
 	std::set<std::string> categories_;
 };
 
+
+/*****************
+*   FUNCTIONS   *
+*****************/
+
+// Add sample rows to the inventory
+void load_sample_inventory(InventoryIndex& inventory) {
+	inventory.add({DEBUG_CABLE_ID, "debug cable", TOOLS_CATEGORY, DEBUG_CABLE_QUANTITY});
+	inventory.add({SENSOR_KIT_ID, "sensor kit", ELECTRONICS_CATEGORY, SENSOR_KIT_QUANTITY});
+	inventory.add({HEX_DRIVER_ID, "hex driver", TOOLS_CATEGORY, HEX_DRIVER_QUANTITY});
+	inventory.add({BREADBOARD_ID, "breadboard", ELECTRONICS_CATEGORY, BREADBOARD_QUANTITY});
+}
+
+// Build sample supplier data keyed by item id
+std::map<int, std::string> build_suppliers() {
+	return {
+		{DEBUG_CABLE_ID, "North Lab"},
+		{SENSOR_KIT_ID, "Circuit House"},
+		{HEX_DRIVER_ID, "North Lab"},
+		{BREADBOARD_ID, "Circuit House"},
+	};
+}
+
+/**
+ * @brief Run the inventory indexer demonstration
+ *
+ * @return Process exit code
+ */
 int main() {
 	InventoryIndex inventory;
-	inventory.add({ 101, "debug cable", "tools", 6 });
-	inventory.add({ 102, "sensor kit", "electronics", 3 });
-	inventory.add({ 103, "hex driver", "tools", 10 });
-	inventory.add({ 104, "breadboard", "electronics", 8 });
-	std::cout << "Duplicate accepted? " << (inventory.add({ 101, "duplicate", "tools", 1 }) ? "yes" : "no") << "\n";
+	load_sample_inventory(inventory);
 
-	inventory.printCategories();
+	std::cout
+		<< "Duplicate accepted? "
+		<< (inventory.add({DEBUG_CABLE_ID, "duplicate", TOOLS_CATEGORY, DUPLICATE_QUANTITY}) ? "yes" : "no")
+		<< "\n";
 
-	const auto tools = inventory.selectCategory("tools");
-	const auto names = inventory.projectNames(tools);
+	inventory.print_categories();
+
+	const auto tools = inventory.select_category(TOOLS_CATEGORY);
+	const auto names = inventory.project_names(tools);
 	std::cout << "Tool names:";
+
+	// Print selected tool names in sorted order
 	for (const std::string& name : names) {
 		std::cout << ' ' << name;
 	}
+
 	std::cout << "\n";
 
-	inventory.renameCategory("electronics", "lab");
-	inventory.printCategories();
+	inventory.rename_category(ELECTRONICS_CATEGORY, LAB_CATEGORY);
+	inventory.print_categories();
 
-	const std::map<int, std::string> suppliers {
-		{ 101, "North Lab" },
-		{ 102, "Circuit House" },
-		{ 103, "North Lab" },
-		{ 104, "Circuit House" },
-	};
-	for (const std::string& row : inventory.joinSuppliers(suppliers)) {
+	const auto suppliers = build_suppliers();
+
+	// Print each inventory row joined to supplier data
+	for (const std::string& row : inventory.join_suppliers(suppliers)) {
 		std::cout << row << "\n";
 	}
 }
