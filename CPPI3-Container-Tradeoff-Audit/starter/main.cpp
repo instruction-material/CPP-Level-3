@@ -4,7 +4,7 @@
 
 int main() {
     std::cout << "Container Tradeoff Audit starter\n";
-    std::vector<std::string> notes {"read the prompt", "fill the TODOs"};
+    std::vector<std::string> notes{"read the prompt", "fill the TODOs"};
 
     // TODO: Replace this placeholder with the project-specific implementation.
     for (const auto& note : notes) {
