@@ -1,3 +1,5 @@
+Reference pack: compare actual behavior after retaining a learner attempt.
+
 # Saveable Task Manager
 
 This required CPPI1 project practices a small command parser, validated state

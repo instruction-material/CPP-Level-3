@@ -1,3 +1,5 @@
+Learner pack: implement the project TODOs and record predictions before comparison.
+
 # Saveable Task Manager
 
 This required CPPI1 project practices a small command parser, validated state

@@ -23,8 +23,16 @@ add_course_executable(build_debug_solution
     CPPI0-Build-and-Debug-Checkpoint/solution/score_tools.cpp)
 add_course_executable(warnings_notebook_starter CPPI0-Warnings-and-Debugger-Notebook/starter/main.cpp)
 add_course_executable(warnings_notebook_solution CPPI0-Warnings-and-Debugger-Notebook/solution/main.cpp)
-add_course_executable(task_manager_starter CPPI1-Saveable-Task-Manager/starter/main.cpp)
-add_course_executable(task_manager_solution CPPI1-Saveable-Task-Manager/solution/main.cpp)
+add_course_executable(task_manager_starter
+    CPPI1-Saveable-Task-Manager/starter/main.cpp
+    CPPI1-Saveable-Task-Manager/starter/task_manager.cpp
+    CPPI1-Saveable-Task-Manager/starter/command_parser.cpp
+    CPPI1-Saveable-Task-Manager/starter/task_storage.cpp)
+add_course_executable(task_manager_solution
+    CPPI1-Saveable-Task-Manager/solution/main.cpp
+    CPPI1-Saveable-Task-Manager/solution/task_manager.cpp
+    CPPI1-Saveable-Task-Manager/solution/command_parser.cpp
+    CPPI1-Saveable-Task-Manager/solution/task_storage.cpp)
 add_course_executable(bad_rows_starter CPPI1-Import-and-Reject-Bad-Rows/starter/main.cpp)
 add_course_executable(bad_rows_solution CPPI1-Import-and-Reject-Bad-Rows/solution/main.cpp)
 add_course_executable(command_scanner_starter CPPI1-Mini-Command-Scanner/starter/main.cpp)
@@ -62,3 +70,12 @@ enable_testing()
 add_test(NAME build_debug_reference COMMAND build_debug_solution --check)
 add_test(NAME build_debug_deliberate_failure COMMAND build_debug_starter --check)
 set_tests_properties(build_debug_deliberate_failure PROPERTIES WILL_FAIL TRUE)
+
+# CPPI1 continues the C++20 multi-translation-unit path from the checkpoint.
+set_target_properties(task_manager_starter task_manager_solution PROPERTIES
+    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+foreach(target task_manager_starter task_manager_solution)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()

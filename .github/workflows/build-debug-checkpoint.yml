@@ -36,3 +36,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cpp3-inventory-source-ci
         run: python3 verify-inventory.py
+      - name: Verify task commands, saved-file recovery and completed learner behavior
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi1-task-manager-source-ci
+        run: python3 verify-task-manager.py
