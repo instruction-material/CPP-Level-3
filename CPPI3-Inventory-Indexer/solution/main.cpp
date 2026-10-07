@@ -51,9 +51,21 @@ class InventoryIndex {
             return false;
         }
 
-        id_to_index_[item.id] = items_.size();
-        categories_.insert(item.category);
         items_.push_back(item);
+        auto category = categories_.end();
+        bool inserted_category = false;
+        try {
+            const auto result = categories_.insert(item.category);
+            category = result.first;
+            inserted_category = result.second;
+            id_to_index_.emplace(item.id, items_.size() - 1);
+        } catch (...) {
+            if (inserted_category) {
+                categories_.erase(category);
+            }
+            items_.pop_back();
+            throw;
+        }
         return true;
     }
 
@@ -104,22 +116,24 @@ class InventoryIndex {
 	 *
 	 * @param to Replacement category name
 	 *
-	 * @return True when at least one item changed
+	 * @return True when the source category occurs
 	 */
     bool rename_category(const std::string& from, const std::string& to) {
         bool changed = false;
-
-        // Update every item that belongs to the source category
-        for (Item& item : items_) {
+        auto updated_items = items_;
+        for (Item& item : updated_items) {
             if (item.category == from) {
                 item.category = to;
                 changed = true;
             }
         }
-
-        // Rebuild category lookup only when a rename happened
         if (changed) {
-            rebuild_category_index();
+            std::set<std::string> updated_categories;
+            for (const Item& item : updated_items) {
+                updated_categories.insert(item.category);
+            }
+            items_.swap(updated_items);
+            categories_.swap(updated_categories);
         }
 
         return changed;
@@ -169,16 +183,6 @@ class InventoryIndex {
     }
 
   private:
-    // Rebuild the category set from current items
-    void rebuild_category_index() {
-        categories_.clear();
-
-        // Insert each current item category
-        for (const Item& item : items_) {
-            categories_.insert(item.category);
-        }
-    }
-
     std::vector<Item> items_;
     std::map<int, std::size_t> id_to_index_;
     std::set<std::string> categories_;
