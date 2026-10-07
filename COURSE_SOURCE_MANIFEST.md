@@ -13,6 +13,8 @@ Canonical source repository: `CPP-Level-3`
 - Run `python3 verify-build-debug.py` for the required CPPI0 checkpoint's actual
   multi-file builds, intentional learner failure, corrected reference, input
   boundaries, trace, header dependencies, and ordinary/sanitized execution.
+- Run `python3 verify-notebook.py` to check the optional worksheet printers and
+  worked examples against actual ordinary and sanitized checkpoint output.
 - Project-specific unit tests or build commands should still be run inside individual project folders when a project includes its own test harness.
 
 ## Active Catalog Targets
@@ -40,4 +42,4 @@ Canonical source repository: `CPP-Level-3`
 - Top-level folders: 15
 - Active linked folders: 15
 - Ledgered inactive/support folders: 0
-- Source-like files: 59
+- Source-like files: 62
