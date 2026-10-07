@@ -31,3 +31,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi0-notebook-source-ci
         run: python3 verify-notebook.py
+      - name: Verify inventory views and allocation-failure state preservation
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cpp3-inventory-source-ci
+        run: python3 verify-inventory.py

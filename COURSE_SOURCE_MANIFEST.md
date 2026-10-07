@@ -15,6 +15,9 @@ Canonical source repository: `CPP-Level-3`
   boundaries, trace, header dependencies, and ordinary/sanitized execution.
 - Run `python3 verify-notebook.py` to check the optional worksheet printers and
   worked examples against actual ordinary and sanitized checkpoint output.
+- Run `python3 verify-inventory.py` for actual reference views, distinct unfinished
+  learner output and allocation-failure state preservation under ordinary and
+  sanitized builds.
 - Project-specific unit tests or build commands should still be run inside individual project folders when a project includes its own test harness.
 
 ## Active Catalog Targets
@@ -42,4 +45,4 @@ Canonical source repository: `CPP-Level-3`
 - Top-level folders: 15
 - Active linked folders: 15
 - Ledgered inactive/support folders: 0
-- Source-like files: 62
+- Source-like files: 63

@@ -19,9 +19,21 @@ class InventoryIndex {
             return false;
         }
 
-        idToIndex_[item.id] = items_.size();
-        categories_.insert(item.category);
         items_.push_back(item);
+        auto category = categories_.end();
+        bool inserted_category = false;
+        try {
+            const auto result = categories_.insert(item.category);
+            category = result.first;
+            inserted_category = result.second;
+            idToIndex_.emplace(item.id, items_.size() - 1);
+        } catch (...) {
+            if (inserted_category) {
+                categories_.erase(category);
+            }
+            items_.pop_back();
+            throw;
+        }
         return true;
     }
 
@@ -42,6 +54,13 @@ class InventoryIndex {
         // TODO: Combine each known inventory row with its supplier name.
         (void)supplierById;
         return {};
+    }
+
+    bool renameCategory(const std::string& from, const std::string& to) {
+        // TODO: Replace matching categories and rebuild the category set safely.
+        (void)from;
+        (void)to;
+        return false;
     }
 
     void printCategories() const {
