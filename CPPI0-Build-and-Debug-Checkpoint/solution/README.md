@@ -139,3 +139,12 @@ Keep the checkpoint small. Optional extensions include another hand-calculated
 case, comparing Make and CMake build commands, or recording debugger evidence
 in addition to a trace. Saving tasks, importing rows, scanners, and command
 architectures belong to later modules.
+
+## Reference explanation
+
+The learner calculation starts visiting elements at index 1 and omits the first
+score. The reference starts at index 0. A zero at the first position masks the
+bug, so the zero-prefix case alone is weak evidence. Empty, single, nonzero-first,
+and capacity cases show why all valid elements must be included exactly once.
+Parsing, the class invariant, build layout, and check expectations are identical
+to the learner pack. Compare only after preserving the attempted repair.

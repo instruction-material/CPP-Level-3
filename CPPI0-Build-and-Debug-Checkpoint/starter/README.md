@@ -139,3 +139,10 @@ Keep the checkpoint small. Optional extensions include another hand-calculated
 case, comparing Make and CMake build commands, or recording debugger evidence
 in addition to a trace. Saving tasks, importing rows, scanners, and command
 architectures belong to later modules.
+
+## Learner status
+
+The supplied program compiles cleanly. Its wrong total is intentional, and four
+of the seven checks initially fail. Record the failure before changing code.
+Keep the checks and public API intact; repair the calculation rather than
+changing expected totals or suppressing failed checks.
