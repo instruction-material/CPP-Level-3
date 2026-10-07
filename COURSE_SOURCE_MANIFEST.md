@@ -18,6 +18,10 @@ Canonical source repository: `CPP-Level-3`
 - Run `python3 verify-inventory.py` for actual reference views, distinct unfinished
   learner output and allocation-failure state preservation under ordinary and
   sanitized builds.
+- Run `python3 verify-task-manager.py` for command grammar, ledger boundaries,
+  save/restart, late-row rejection, a real write failure with retry, distinct
+  unfinished learner and completed learner/reference behavior, strict C++20
+  ordinary/sanitized builds, Make and the existing CMake target names.
 - Project-specific unit tests or build commands should still be run inside individual project folders when a project includes its own test harness.
 
 ## Active Catalog Targets
@@ -45,4 +49,4 @@ Canonical source repository: `CPP-Level-3`
 - Top-level folders: 15
 - Active linked folders: 15
 - Ledgered inactive/support folders: 0
-- Source-like files: 63
+- Source-like files: 78
