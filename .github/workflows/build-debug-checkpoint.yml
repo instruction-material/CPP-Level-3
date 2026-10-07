@@ -41,3 +41,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi1-task-manager-source-ci
         run: python3 verify-task-manager.py
+      - name: Verify selective imports, line rejection reports and fatal-read rollback
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi1-row-import-source-ci
+        run: python3 verify-row-import.py

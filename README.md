@@ -23,3 +23,24 @@ Each project directory contains a student-facing `starter/` implementation and a
 - `CPPI5-Template-Error-Reading-Drill`: Template Error Reading Drill
 - `CPPI6-Saveable-Command-Simulation`: Saveable Command-Driven Simulation
 - `CPPI6-Enum-vs-Polymorphic-State-Review`: Enum vs Polymorphic State Review
+
+## Optional CPPI1 selective-import extension
+
+`CPPI1-Import-and-Reject-Bad-Rows` extends the completed Task Manager with
+an `import "PATH"` command. Its learner/reference packs contain five C++20
+translation units, four headers, a Makefile and the full neutral brief. The
+supplied base remains complete; only two importer functions are unfinished.
+Import accepts valid increasing-ID rows and reports rejected physical lines,
+while fatal file/header/read failures preserve both state and the earlier report.
+The required project's full-file reload policy remains separate.
+
+```sh
+cmake -S . -B build
+cmake --build build --target bad_rows_starter bad_rows_solution
+python3 verify-row-import.py
+```
+
+The verifier distinguishes the untouched learner from the reference and a
+completed learner fixture; it checks mixed imports, explicit save/restart,
+fatal read failures, strict bounds, Make and CMake in ordinary and sanitizer
+builds. This scope does not certify unrelated C++3 projects.

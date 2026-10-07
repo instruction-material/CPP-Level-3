@@ -33,8 +33,18 @@ add_course_executable(task_manager_solution
     CPPI1-Saveable-Task-Manager/solution/task_manager.cpp
     CPPI1-Saveable-Task-Manager/solution/command_parser.cpp
     CPPI1-Saveable-Task-Manager/solution/task_storage.cpp)
-add_course_executable(bad_rows_starter CPPI1-Import-and-Reject-Bad-Rows/starter/main.cpp)
-add_course_executable(bad_rows_solution CPPI1-Import-and-Reject-Bad-Rows/solution/main.cpp)
+add_course_executable(bad_rows_starter
+    CPPI1-Import-and-Reject-Bad-Rows/starter/main.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/starter/task_manager.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/starter/command_parser.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/starter/task_storage.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/starter/task_import.cpp)
+add_course_executable(bad_rows_solution
+    CPPI1-Import-and-Reject-Bad-Rows/solution/main.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/solution/task_manager.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/solution/command_parser.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/solution/task_storage.cpp
+    CPPI1-Import-and-Reject-Bad-Rows/solution/task_import.cpp)
 add_course_executable(command_scanner_starter CPPI1-Mini-Command-Scanner/starter/main.cpp)
 add_course_executable(command_scanner_solution CPPI1-Mini-Command-Scanner/solution/main.cpp)
 add_course_executable(maze_search_starter CPPI2-Recursive-Maze-Search/starter/main.cpp)
@@ -75,6 +85,15 @@ set_tests_properties(build_debug_deliberate_failure PROPERTIES WILL_FAIL TRUE)
 set_target_properties(task_manager_starter task_manager_solution PROPERTIES
     CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
 foreach(target task_manager_starter task_manager_solution)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()
+
+# Selective import extends the same C++20 Task Manager, with its own policy.
+set_target_properties(bad_rows_starter bad_rows_solution PROPERTIES
+    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+foreach(target bad_rows_starter bad_rows_solution)
     target_compile_options(${target} PRIVATE
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
         $<$<CXX_COMPILER_ID:MSVC>:/WX>)
