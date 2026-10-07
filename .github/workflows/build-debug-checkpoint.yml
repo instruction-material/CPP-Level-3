@@ -51,3 +51,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi2-maze-search-source-ci
         run: python3 verify-maze-search.py
+      - name: Verify recursion worksheet traces against the saved maze and independent models
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi2-recursion-trace-source-ci
+        run: python3 verify-recursion-trace.py

@@ -8,8 +8,12 @@ Canonical source repository: `CPP-Level-3`
 
 ## Verification Gate
 
-- Run `./verify-course-source.sh` from this repository root before treating the source pack as ready.
-- The verification gate checks for this manifest, the source backlog ledger, source-like files, removed Replit metadata, and any repo-specific readiness files.
+- Run `./verify-course-source.sh` for source presence and catalog bookkeeping.
+  It checks this manifest, the backlog ledger, source-like files and removed
+  Replit metadata. Presence alone does not establish working starter/reference
+  behavior or complete teaching material.
+- The behavioral gates below cover only their named projects. Other active
+  folders require their own content, source and workflow audit.
 - Run `python3 verify-build-debug.py` for the required CPPI0 checkpoint's actual
   multi-file builds, intentional learner failure, corrected reference, input
   boundaries, trace, header dependencies, and ordinary/sanitized execution.
@@ -22,7 +26,16 @@ Canonical source repository: `CPP-Level-3`
   save/restart, late-row rejection, a real write failure with retry, distinct
   unfinished learner and completed learner/reference behavior, strict C++20
   ordinary/sanitized builds, Make and the existing CMake target names.
-- Project-specific unit tests or build commands should still be run inside individual project folders when a project includes its own test harness.
+- Run `python3 verify-row-import.py` for selective valid-row imports, rejected
+  physical-line reports, fatal-read rollback, save/restart and ordinary/sanitized
+  learner/reference builds with Make and CMake.
+- Run `python3 verify-maze-search.py` for bounded input, recursive search, valid
+  paths, trace/backtracking, repeated calls and independent reachability checks.
+- Run `python3 verify-recursion-trace.py` for the optional saved-maze worksheet's
+  three full worked traces, independent stack/reachability models, ordinary and
+  sanitizer execution, blank learner records, printers and CMake targets.
+- Run project-specific acceptance checks for every other folder before claiming
+  readiness; the catalog mapping does not certify those implementations.
 
 ## Active Catalog Targets
 
@@ -49,4 +62,3 @@ Canonical source repository: `CPP-Level-3`
 - Top-level folders: 15
 - Active linked folders: 15
 - Ledgered inactive/support folders: 0
-- Source-like files: 78

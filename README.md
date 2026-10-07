@@ -59,3 +59,17 @@ reachability and valid returned paths on 480 deterministic graph comparisons,
 alongside recursion traces, repeated calls, parser rollback, strict byte/grid
 bounds, ordinary/sanitizer builds and Make/CMake workflows. This project does not
 certify unrelated course packs.
+
+## Optional CPPI2 recursion worksheet
+
+`CPPI2-Recursion-Trace-Drill/starter/WORKSHEET.md` continues the saved, completed
+maze project. Predict three valid inputs, draw call/return state, then record
+actual traces and a corrected explanation. Blank learner records remain separate
+from the staff `solution/WORKED-TRACE.md`. The preserved C++17 main.cpp files and
+CMake trace_drill targets only print their respective worksheets.
+
+Run `python3 verify-recursion-trace.py` to compare the complete worked outputs
+with an independent iterative frame-stack model and breadth-first reachability.
+It runs ordinary and sanitizer maze references and completed learner fixtures,
+distinguishes untouched status 3, checks input preservation and repeated solves
+in one process, and verifies both worksheet printers and CMake targets.

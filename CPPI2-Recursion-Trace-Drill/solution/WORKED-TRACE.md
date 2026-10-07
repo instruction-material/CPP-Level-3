@@ -1,8 +1,4 @@
-#include <iostream>
-
-// Convenience worksheet output only; no maze execution or grading.
-int main() {
-    std::cout << R"TRACE(# Recursion Trace Drill: Worked Example
+# Recursion Trace Drill: Worked Example
 
 Staff comparison after a learner prediction and recorded attempt. Continue the
 saved Recursive Maze Search source; this is a worked worksheet, not another
@@ -153,6 +149,3 @@ and redirect stdout to a separate notes file if useful. Build the actual maze
 with its C++20 Makefile and use the three inputs from the learner worksheet.
 From the source root, run python3 verify-recursion-trace.py. Existing CMake
 targets trace_drill_starter and trace_drill_solution remain worksheet printers.
-)TRACE";
-    return std::cout ? 0 : 1;
-}
