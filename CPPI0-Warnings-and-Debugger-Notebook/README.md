@@ -2,7 +2,7 @@
 
 This optional worksheet records evidence from the saved Build and Debug
 Checkpoint. Continue that same project; no second application is required.
-Use its learner pack and preserve the original attempt before a correction.
+Preserve the original learner attempt before a correction.
 The checkpoint brief supplies the input rules, expected totals, source map,
 build commands and completion criteria.
 
@@ -87,8 +87,8 @@ An untouched learner's known failure is evidence of reproduction only.
 Compare the saved evidence with the worked example after attempting the
 repair. A reference transcript is an example from a particular source
 revision, not proof that another student's source passed. Keep the notebook
-and final exported source together. An instructor can pause at each
-prediction, build, trace and correction to discuss the recorded reasoning.
+and final exported source together. Pause at each prediction, build, trace and correction to discuss
+the recorded reasoning.
 
 The original `main.cpp` in this notebook pack only prints this worksheet
 for convenience. It does not implement a second project, run the checkpoint,
