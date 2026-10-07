@@ -47,8 +47,14 @@ add_course_executable(bad_rows_solution
     CPPI1-Import-and-Reject-Bad-Rows/solution/task_import.cpp)
 add_course_executable(command_scanner_starter CPPI1-Mini-Command-Scanner/starter/main.cpp)
 add_course_executable(command_scanner_solution CPPI1-Mini-Command-Scanner/solution/main.cpp)
-add_course_executable(maze_search_starter CPPI2-Recursive-Maze-Search/starter/main.cpp)
-add_course_executable(maze_search_solution CPPI2-Recursive-Maze-Search/solution/main.cpp)
+add_course_executable(maze_search_starter
+    CPPI2-Recursive-Maze-Search/starter/main.cpp
+    CPPI2-Recursive-Maze-Search/starter/maze.cpp
+    CPPI2-Recursive-Maze-Search/starter/maze_search.cpp)
+add_course_executable(maze_search_solution
+    CPPI2-Recursive-Maze-Search/solution/main.cpp
+    CPPI2-Recursive-Maze-Search/solution/maze.cpp
+    CPPI2-Recursive-Maze-Search/solution/maze_search.cpp)
 add_course_executable(trace_drill_starter CPPI2-Recursion-Trace-Drill/starter/main.cpp)
 add_course_executable(trace_drill_solution CPPI2-Recursion-Trace-Drill/solution/main.cpp)
 add_course_executable(inventory_indexer_starter CPPI3-Inventory-Indexer/starter/main.cpp)
@@ -94,6 +100,15 @@ endforeach()
 set_target_properties(bad_rows_starter bad_rows_solution PROPERTIES
     CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
 foreach(target bad_rows_starter bad_rows_solution)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()
+
+# The bounded recursive grid search continues the C++20 multi-file sequence.
+set_target_properties(maze_search_starter maze_search_solution PROPERTIES
+    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+foreach(target maze_search_starter maze_search_solution)
     target_compile_options(${target} PRIVATE
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
         $<$<CXX_COMPILER_ID:MSVC>:/WX>)

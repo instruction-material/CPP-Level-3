@@ -1,90 +1,51 @@
-#include <algorithm>
+#include "maze.h"
+
+#include <exception>
 #include <iostream>
-#include <map>
 #include <string>
-#include <vector>
-
-/*****************
-*   CONSTANTS   *
-*****************/
-
-const std::string PASS_LABEL = "pass";
-const std::string REVIEW_LABEL = "review";
-const std::string INPUT_CASES_LABEL = "input cases";
-const std::string VALIDATION_CHECKS_LABEL = "validation checks";
-const std::string DESIGN_NOTES_LABEL = "design notes";
-constexpr int INPUT_CASE_COUNT = 2;
-constexpr int VALIDATION_CHECK_COUNT = 2;
-constexpr int DESIGN_NOTE_COUNT = 1;
-constexpr int MINIMUM_PASSING_EVIDENCE = 0;
-
-/*************
-*   TYPES   *
-*************/
+#include <string_view>
 
 namespace {
-// Store one checklist outcome for the reference solution
-struct CheckResult {
-    std::string label;
-    bool passed;
-};
+constexpr const char* usage =
+    "Usage: maze-search [--trace]\n"
+    "       maze-search --help\n"
+    "Read ROWS COLS, then ROWS grid lines from standard input.\n"
+    "Use S (start), E (exit), . (open) and # (wall).\n"
+    "Dimensions are 1..20; coordinates are zero-based.\n";
+}
 
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-// Print checklist outcomes in display order
-void print_results(const std::vector<CheckResult>& results) {
-    // Print one status line for each checklist result
-    for (const auto& result : results) {
-        std::cout << result.label << ": "
-                  << (result.passed ? PASS_LABEL : REVIEW_LABEL) << '\n';
+int main(int argc, char* argv[]) {
+    bool trace = false;
+    if (argc == 2 && std::string_view(argv[1]) == "--help") {
+        std::cout << usage;
+        return 0;
     }
-}
-
-// Build the evidence counts used by this reference checklist
-std::map<std::string, int> build_evidence() {
-    return {
-        {INPUT_CASES_LABEL, INPUT_CASE_COUNT},
-        {VALIDATION_CHECKS_LABEL, VALIDATION_CHECK_COUNT},
-        {DESIGN_NOTES_LABEL, DESIGN_NOTE_COUNT},
-    };
-}
-
-// Convert evidence counts into checklist results
-std::vector<CheckResult>
-build_results(const std::map<std::string, int>& evidence) {
-    std::vector<CheckResult> results;
-
-    // Treat every positive evidence count as passing
-    for (const auto& [label, count] : evidence) {
-        results.push_back({label, count > MINIMUM_PASSING_EVIDENCE});
+    if (argc == 2 && std::string_view(argv[1]) == "--trace") trace = true;
+    else if (argc != 1) {
+        std::cerr << "Error: Unknown or extra argument.\n" << usage;
+        return 2;
     }
-
-    return results;
-}
-
-// Sort checklist results alphabetically by label
-bool compare_results_by_label(const CheckResult& left,
-                              const CheckResult& right) {
-    return left.label < right.label;
-}
-} // namespace
-
-/**
- * @brief Print the Recursive Maze Search reference checklist
- *
- * @return Process exit code
- */
-int main() {
-    std::cout << "Recursive Maze Search reference solution\n";
-
-    const auto evidence = build_evidence();
-    auto results = build_results(evidence);
-
-    // Keep output order stable for review
-    std::sort(results.begin(), results.end(), compare_results_by_label);
-
-    print_results(results);
-    return 0;
+    mazecourse::Maze maze;
+    std::string error;
+    if (!mazecourse::readMaze(std::cin, maze, error)) {
+        std::cerr << "Error: " << error << '\n';
+        return 2;
+    }
+    try {
+        const auto result = mazecourse::solveMaze(maze);
+        if (trace) {
+            for (const auto& event : result.trace) std::cout << event << '\n';
+        }
+        if (!result.found) std::cout << "No path\n";
+        else {
+            std::cout << "Path " << result.path.size() << '\n';
+            for (const auto cell : result.path) {
+                std::cout << cell.row << ' ' << cell.column << '\n';
+            }
+        }
+        return 0;
+    } catch (const std::exception& exception) {
+        std::cerr << "Error: " << exception.what() << '\n';
+        return 3;
+    }
 }

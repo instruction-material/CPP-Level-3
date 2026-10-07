@@ -46,3 +46,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi1-row-import-source-ci
         run: python3 verify-row-import.py
+      - name: Verify bounded recursive search, paths, backtracking and parser failures
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi2-maze-search-source-ci
+        run: python3 verify-maze-search.py

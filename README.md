@@ -44,3 +44,18 @@ The verifier distinguishes the untouched learner from the reference and a
 completed learner fixture; it checks mixed imports, explicit save/restart,
 fatal read failures, strict bounds, Make and CMake in ordinary and sanitizer
 builds. This scope does not certify unrelated C++3 projects.
+
+## CPPI2 recursive maze search
+
+`CPPI2-Recursive-Maze-Search` supplies a six-file C++20 pack with complete bounded
+input validation and one focused recursive learner function. Search keeps the
+input immutable, marks entered cells once, backtracks failed path entries and
+returns the first path in up/right/down/left order. It does not promise a shortest
+path. The untouched learner explicitly reports unfinished search.
+
+Build `maze_search_starter` and `maze_search_solution` with CMake and run
+`python3 verify-maze-search.py`. The independent breadth-first oracle checks
+reachability and valid returned paths on 480 deterministic graph comparisons,
+alongside recursion traces, repeated calls, parser rollback, strict byte/grid
+bounds, ordinary/sanitizer builds and Make/CMake workflows. This project does not
+certify unrelated course packs.
