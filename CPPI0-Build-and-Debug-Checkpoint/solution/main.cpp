@@ -1,90 +1,100 @@
-#include <algorithm>
+#include "score_ledger.h"
+#include "score_tools.h"
+
 #include <iostream>
-#include <map>
-#include <string>
+#include <stdexcept>
+#include <string_view>
 #include <vector>
 
-/*****************
-*   CONSTANTS   *
-*****************/
-
-const std::string PASS_LABEL = "pass";
-const std::string REVIEW_LABEL = "review";
-const std::string INPUT_CASES_LABEL = "input cases";
-const std::string VALIDATION_CHECKS_LABEL = "validation checks";
-const std::string DESIGN_NOTES_LABEL = "design notes";
-constexpr int INPUT_CASE_COUNT = 2;
-constexpr int VALIDATION_CHECK_COUNT = 2;
-constexpr int DESIGN_NOTE_COUNT = 1;
-constexpr int MINIMUM_PASSING_EVIDENCE = 0;
-
-/*************
-*   TYPES   *
-*************/
-
 namespace {
-// Store one checklist outcome for the reference solution
-struct CheckResult {
-    std::string label;
-    bool passed;
-};
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-// Print checklist outcomes in display order
-void print_results(const std::vector<CheckResult>& results) {
-    // Print one status line for each checklist result
-    for (const auto& result : results) {
-        std::cout << result.label << ": "
-                  << (result.passed ? PASS_LABEL : REVIEW_LABEL) << '\n';
-    }
+void printUsage(std::ostream& out) {
+    out << "Usage: checkpoint [--trace] [--scores [SCORE ...]]\n"
+        << "       checkpoint --check\n"
+        << "       checkpoint --help\n"
+        << "Scores are ASCII decimal integers from 0 to 100; at most 20.\n";
 }
 
-// Build the evidence counts used by this reference checklist
-std::map<std::string, int> build_evidence() {
-    return {
-        {INPUT_CASES_LABEL, INPUT_CASE_COUNT},
-        {VALIDATION_CHECKS_LABEL, VALIDATION_CHECK_COUNT},
-        {DESIGN_NOTES_LABEL, DESIGN_NOTE_COUNT},
+int checkExamples() {
+    struct Example {
+        const char* name;
+        std::vector<int> scores;
+        int expected;
     };
-}
-
-// Convert evidence counts into checklist results
-std::vector<CheckResult>
-build_results(const std::map<std::string, int>& evidence) {
-    std::vector<CheckResult> results;
-
-    // Treat every positive evidence count as passing
-    for (const auto& [label, count] : evidence) {
-        results.push_back({label, count > MINIMUM_PASSING_EVIDENCE});
+    const std::vector<Example> examples {
+        {"empty", {}, 0},
+        {"single", {85}, 85},
+        {"mixed", {40, 60, 80}, 180},
+        {"zero-prefix", {0, 60}, 60},
+        {"zero-suffix", {60, 0}, 60},
+        {"boundaries", {0, 100}, 100},
+        {"capacity", std::vector<int>(MAX_SCORES, MAX_SCORE), 2000},
+    };
+    bool passed = true;
+    for (const auto& example : examples) {
+        ScoreLedger ledger;
+        for (int score : example.scores) ledger.add(score);
+        const int actual = ledger.total();
+        const bool matches = actual == example.expected;
+        passed = passed && matches;
+        std::cout << example.name << ": expected=" << example.expected
+                  << " actual=" << actual << ' ' << (matches ? "PASS" : "FAIL") << '\n';
     }
-
-    return results;
-}
-
-// Sort checklist results alphabetically by label
-bool compare_results_by_label(const CheckResult& left,
-                              const CheckResult& right) {
-    return left.label < right.label;
+    return passed ? 0 : 1;
 }
 } // namespace
 
-/**
- * @brief Print the Build and Debug Checkpoint reference checklist
- *
- * @return Process exit code
- */
-int main() {
-    std::cout << "Build and Debug Checkpoint reference solution\n";
-
-    const auto evidence = build_evidence();
-    auto results = build_results(evidence);
-
-    // Keep output order stable for review
-    std::sort(results.begin(), results.end(), compare_results_by_label);
-
-    print_results(results);
-    return 0;
+int main(int argc, char* argv[]) {
+    try {
+        if (argc == 2 && std::string_view(argv[1]) == "--help") {
+            printUsage(std::cout);
+            return std::cout ? 0 : 1;
+        }
+        if (argc == 2 && std::string_view(argv[1]) == "--check") {
+            const int result = checkExamples();
+            return std::cout ? result : 1;
+        }
+        int position = 1;
+        bool trace = false;
+        if (position < argc && std::string_view(argv[position]) == "--trace") {
+            trace = true;
+            ++position;
+        }
+        std::vector<int> inputs;
+        if (position == argc) {
+            inputs = {40, 60, 80};
+        } else {
+            if (std::string_view(argv[position]) != "--scores") {
+                printUsage(std::cerr);
+                return 2;
+            }
+            ++position;
+            for (; position < argc; ++position) {
+                int score = 0;
+                if (!parseScore(argv[position], score)) {
+                    throw std::invalid_argument("score must be a decimal integer from 0 to 100");
+                }
+                if (inputs.size() == MAX_SCORES) {
+                    throw std::length_error("at most 20 scores are allowed");
+                }
+                inputs.push_back(score);
+            }
+        }
+        ScoreLedger ledger;
+        for (int score : inputs) ledger.add(score);
+        std::cout << "Scores:";
+        for (int score : ledger.scores()) std::cout << ' ' << score;
+        std::cout << '\n';
+        const int total = ledger.total(trace ? &std::cout : nullptr);
+        std::cout << "Total: " << total << '\n';
+        return std::cout ? 0 : 1;
+    } catch (const std::invalid_argument& error) {
+        std::cerr << "error: " << error.what() << '\n';
+        return 2;
+    } catch (const std::length_error& error) {
+        std::cerr << "error: " << error.what() << '\n';
+        return 2;
+    } catch (const std::exception& error) {
+        std::cerr << "failure: " << error.what() << '\n';
+        return 1;
+    }
 }

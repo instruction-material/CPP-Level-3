@@ -10,6 +10,9 @@ Canonical source repository: `CPP-Level-3`
 
 - Run `./verify-course-source.sh` from this repository root before treating the source pack as ready.
 - The verification gate checks for this manifest, the source backlog ledger, source-like files, removed Replit metadata, and any repo-specific readiness files.
+- Run `python3 verify-build-debug.py` for the required CPPI0 checkpoint's actual
+  multi-file builds, intentional learner failure, corrected reference, input
+  boundaries, trace, header dependencies, and ordinary/sanitized execution.
 - Project-specific unit tests or build commands should still be run inside individual project folders when a project includes its own test harness.
 
 ## Active Catalog Targets
@@ -37,4 +40,4 @@ Canonical source repository: `CPP-Level-3`
 - Top-level folders: 15
 - Active linked folders: 15
 - Ledgered inactive/support folders: 0
-- Source-like files: 46
+- Source-like files: 59

@@ -6,15 +6,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 function(add_course_executable target source)
-    add_executable(${target} ${source})
+    add_executable(${target} ${source} ${ARGN})
     target_compile_options(${target} PRIVATE
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wall -Wextra -Wpedantic>
         $<$<CXX_COMPILER_ID:MSVC>:/W4>
     )
 endfunction()
 
-add_course_executable(build_debug_starter CPPI0-Build-and-Debug-Checkpoint/starter/main.cpp)
-add_course_executable(build_debug_solution CPPI0-Build-and-Debug-Checkpoint/solution/main.cpp)
+add_course_executable(build_debug_starter
+    CPPI0-Build-and-Debug-Checkpoint/starter/main.cpp
+    CPPI0-Build-and-Debug-Checkpoint/starter/score_ledger.cpp
+    CPPI0-Build-and-Debug-Checkpoint/starter/score_tools.cpp)
+add_course_executable(build_debug_solution
+    CPPI0-Build-and-Debug-Checkpoint/solution/main.cpp
+    CPPI0-Build-and-Debug-Checkpoint/solution/score_ledger.cpp
+    CPPI0-Build-and-Debug-Checkpoint/solution/score_tools.cpp)
 add_course_executable(warnings_notebook_starter CPPI0-Warnings-and-Debugger-Notebook/starter/main.cpp)
 add_course_executable(warnings_notebook_solution CPPI0-Warnings-and-Debugger-Notebook/solution/main.cpp)
 add_course_executable(task_manager_starter CPPI1-Saveable-Task-Manager/starter/main.cpp)
@@ -43,3 +49,16 @@ add_course_executable(command_sim_starter CPPI6-Saveable-Command-Simulation/star
 add_course_executable(command_sim_solution CPPI6-Saveable-Command-Simulation/solution/main.cpp)
 add_course_executable(state_review_starter CPPI6-Enum-vs-Polymorphic-State-Review/starter/main.cpp)
 add_course_executable(state_review_solution CPPI6-Enum-vs-Polymorphic-State-Review/solution/main.cpp)
+
+# The setup checkpoint establishes the course's documented C++20 path.
+set_target_properties(build_debug_starter build_debug_solution PROPERTIES
+    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+foreach(target build_debug_starter build_debug_solution)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()
+enable_testing()
+add_test(NAME build_debug_reference COMMAND build_debug_solution --check)
+add_test(NAME build_debug_deliberate_failure COMMAND build_debug_starter --check)
+set_tests_properties(build_debug_deliberate_failure PROPERTIES WILL_FAIL TRUE)
