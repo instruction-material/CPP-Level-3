@@ -8,8 +8,8 @@ build commands and completion criteria.
 
 ## Preparation
 
-1. Save the current checkpoint in the site IDE and download its ZIP, or use
-   the existing local learner pack. Extract the ZIP before compiling C++.
+1. Save the current checkpoint in the site IDE and download its ZIP, or build
+   the existing local checkpoint pack. Extract the ZIP before compiling C++.
 2. Copy this worksheet to a notes file. Keep it alongside the checkpoint
    source, separate from the source file being edited.
 3. Record the compiler version, platform, source role and starting revision
@@ -70,7 +70,7 @@ Save the attempted explanation before consulting the staff reference.
 Make the smallest justified change in the checkpoint, rebuild, and run the
 same input. Record before and after output. Run `--check` and two additional
 hand-calculated cases, including a boundary or a rejected input. Rejection
-cases have no partial score output and return status 2. A completed learner
+cases have no partial score output and return status 2. The repaired checkpoint
 must produce seven actual passing checks and return status 0 for `--check`.
 An untouched learner's known failure is evidence of reproduction only.
 
