@@ -1,8 +1,4 @@
-#include <iostream>
-
-// Convenience output only; no grading or second application.
-int main() {
-    std::cout << R"NOTE(# Warnings and Debugger Evidence Notebook
+# Warnings and Debugger Evidence Notebook
 
 This optional worksheet records evidence from the saved Build and Debug
 Checkpoint. Continue that same project; no second application is required.
@@ -100,6 +96,3 @@ grade evidence or certify completion. The Markdown file is the primary
 resource. Optionally compile the generator with
 `c++ -std=c++17 -Wall -Wextra -Wpedantic -Werror main.cpp -o notebook`
 and run `./notebook > evidence.md`. Edit the generated notes separately.
-)NOTE";
-    return std::cout ? 0 : 1;
-}

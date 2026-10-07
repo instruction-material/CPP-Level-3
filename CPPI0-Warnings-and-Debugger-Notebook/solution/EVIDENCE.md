@@ -1,8 +1,4 @@
-#include <iostream>
-
-// Convenience output only; no grading or second application.
-int main() {
-    std::cout << R"NOTE(# Worked Warnings and Debugger Evidence Notebook
+# Worked Warnings and Debugger Evidence Notebook
 
 This separate reference illustrates the same saved Build and Debug Checkpoint.
 Attempt and save the learner worksheet before comparing it. The exact output
@@ -68,6 +64,3 @@ commands and outputs for review.
 The original `main.cpp` in this reference pack prints this worked Markdown
 example. The Markdown is the primary resource. The generator builds with
 `c++ -std=c++17 -Wall -Wextra -Wpedantic -Werror main.cpp -o notebook`.
-)NOTE";
-    return std::cout ? 0 : 1;
-}

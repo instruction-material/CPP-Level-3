@@ -26,3 +26,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi0-build-debug-source-ci
         run: python3 verify-build-debug.py
+      - name: Verify notebook printers and examples against the actual checkpoint
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi0-notebook-source-ci
+        run: python3 verify-notebook.py
