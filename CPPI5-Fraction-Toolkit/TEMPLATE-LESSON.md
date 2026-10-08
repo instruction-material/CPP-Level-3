@@ -94,7 +94,8 @@ recompile before investigating follow-on messages.
 The optional Template Error Reading Drill provides the same controlled missing
 operation with a Score type and an explicit macro. Its ordinary program remains
 working. Save the primary Fraction project and use a separate practice project;
-opening the worksheet itself should not replace or import an application.
+opening the worksheet displays instructions. Its separate practice action imports
+the drill.
 Record reasoning before consulting the worked correction.
 
 ## Guided checks and independent study
