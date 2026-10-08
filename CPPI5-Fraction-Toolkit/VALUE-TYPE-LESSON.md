@@ -126,12 +126,12 @@ that a function has no observable side effects.
 
 ## Guided checks and independent study
 
-1. Change original 84 to 59 and both increments 7 to 1. Predict 59, 60 and 60,
+1. Change original `84` to `59` and both increments `7` to `1`. Predict 59, 60 and 60,
    followed by the same three true values. Explain why the rejected assignment
    still preserves the copy.
 2. Change both increments to zero. Predict a tied comparison and explain why
    `original < copy` becomes false while the values remain valid.
-3. In a separate copy, try original -1 or 101. Record stdout, stderr and status.
+3. In a separate copy, try original `-1` or `101`. Record stdout, stderr and status.
    Explain why there is no valid original object to copy after that construction.
 4. Explain why a const original can be read and used as an operand but cannot be
    reassigned. Try an assignment in a separate practice copy and read the actual

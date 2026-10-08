@@ -17,8 +17,9 @@ FIX = '''    friend bool operator<(const Score& left, const Score& right) {
 def main():
     starter = (PACK / 'starter/main.cpp').read_text()
     worked = (PACK / 'solution/main.cpp').read_text()
-    assert starter.count('    int value;\n') == 1
-    completed = starter.replace('    int value;\n', '    int value;\n' + FIX)
+    marker = '    // TODO: Add the conventional ordering operation after reading the diagnostic.\n'
+    assert starter.count(marker) == 1
+    completed = starter.replace(marker, FIX)
     assert completed == worked
     compilers = {'GCC': shutil.which('g++'), 'Clang': shutil.which('clang++')}
     assert all(compilers.values()), 'Both supported diagnostic compilers are required.'

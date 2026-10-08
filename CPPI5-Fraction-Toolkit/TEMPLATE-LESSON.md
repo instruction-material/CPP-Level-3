@@ -99,9 +99,9 @@ Record reasoning before consulting the worked correction.
 
 ## Guided checks and independent study
 
-1. Change integers 7 and 3 to -4 and 6. Predict -4. Change strings to `z` and `aa`;
+1. Change integers `7` and `3` to `-4` and `6`. Predict `-4`. Change strings to `z` and `aa`;
    predict `aa` and explain why shortest length is not the comparison rule.
-2. Change the two different Reading values to 0 and 100. Predict the smaller
+2. Change the two different Reading values to `0` and `100`. Predict the smaller
    numeric value. Keep labels unrelated to numeric order.
 3. Reverse the labels in the tied call. Predict the returned label from the
    left argument, not alphabetical order. Explain the one-comparison choice.
