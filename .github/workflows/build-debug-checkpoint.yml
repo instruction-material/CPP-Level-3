@@ -109,3 +109,35 @@ jobs:
           CXX: g++
           CLASSES_AUDIT_PARENT_TASK_ID: cppi5-builds-source-ci
         run: python3 verify-cppi5-builds.py
+
+  cppi6:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Verify rover commands, independent routes and real save rollback
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi6-rover-source-ci
+        run: python3 verify-rover-simulation.py
+      - name: Verify enum and polymorphic transitions and actual virtual destruction
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi6-state-review-source-ci
+        run: python3 verify-state-review.py
+      - name: Verify full dispatch and pathway lesson programs and changed cases
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi6-lessons-source-ci
+        run: python3 verify-cppi6-lessons.py
+      - name: Verify all four CPPI6 Make packs and preserved CMake targets
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi6-builds-source-ci
+        run: python3 verify-cppi6-builds.py
