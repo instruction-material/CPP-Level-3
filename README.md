@@ -117,3 +117,27 @@ use strict C++17/20 ordinary and sanitizer builds; all four Make packs and
 preserved CMake targets are checked separately. Each subprocess has a bounded
 lifetime and cleanup. These checks cover their executed cases; they do not
 certify unrelated course packs, crash durability or concurrent path changes.
+
+## CPPI5 values, templates and optional diagnostic practice
+
+`CPPI5-Fraction-Toolkit` provides five genuine learner implementation tasks and
+a bounded exact Fraction reference. Both three-file packs carry their complete
+neutral brief and strict C++20 Makefile. The two complete teaching documents
+explain invariants, const copies, nonmutating named operations, conventional
+operators, ordering laws, template requirements and diagnostic reading.
+
+`CPPI5-Template-Error-Reading-Drill/WORKSHEET.md` is optional separate practice.
+Its ordinary learner supplies integer/string calls. A documented macro triggers
+a missing Score comparison; the worked copy supplies only that comparison.
+Save and preserve the primary project before starting the drill. Its worksheet
+and worked record replace generic notes and fixed grading output.
+
+Run `python3 verify-fraction-toolkit.py`, `python3 verify-template-drill.py`,
+`python3 verify-cppi5-lessons.py` and `python3 verify-cppi5-builds.py` on the hosted
+Linux toolchain. They compare completed and reference results with Python's
+independent exact arithmetic model, inspect actual GCC/Clang diagnostics, probe
+copy/const/order laws and unchanged operands after rejection, execute the
+complete/changed teaching programs, and check all four Make packs and preserved
+CMake names. Ordinary/sanitizer C++17/20 acceptance is separate from the
+documented C++20 learner build path. These gates cover executed cases; source
+publication does not validate unseen learner work or establish site deployment.

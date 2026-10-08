@@ -5,8 +5,8 @@ have predictable meanings. This core project connects class invariants to const
 operations, conventional operators, standard sorting and a reusable template.
 The optional template diagnostic drill is separate practice.
 
-Read [value types and operators](VALUE-TYPE-LESSON.md) and
-[template requirements and diagnostics](TEMPLATE-LESSON.md) first. In an
+Read [value types and operators](https://github.com/instruction-material/CPP-Level-3/blob/main/CPPI5-Fraction-Toolkit/VALUE-TYPE-LESSON.md) and
+[template requirements and diagnostics](https://github.com/instruction-material/CPP-Level-3/blob/main/CPPI5-Fraction-Toolkit/TEMPLATE-LESSON.md) first. In an
 extracted standalone pack, these teaching documents are available in the parent
 project on GitHub. The source and this complete brief travel with the pack.
 

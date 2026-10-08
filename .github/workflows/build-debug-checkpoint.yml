@@ -85,3 +85,27 @@ jobs:
           CXX: g++
           CLASSES_AUDIT_PARENT_TASK_ID: cppi4-builds-source-ci
         run: python3 verify-cppi4-builds.py
+      - name: Verify Fraction values, independent arithmetic and copy/ordering laws
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi5-fraction-source-ci
+        run: python3 verify-fraction-toolkit.py
+      - name: Verify real GCC and Clang template diagnostics and changed corrected calls
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi5-template-source-ci
+        run: python3 verify-template-drill.py
+      - name: Verify complete value and template lesson programs and actual failure traces
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi5-lessons-source-ci
+        run: python3 verify-cppi5-lessons.py
+      - name: Verify all four CPPI5 Make packs and preserved CMake targets
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi5-builds-source-ci
+        run: python3 verify-cppi5-builds.py

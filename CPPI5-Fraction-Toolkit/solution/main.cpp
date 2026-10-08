@@ -1,90 +1,158 @@
 #include <algorithm>
+#include <cstdint>
 #include <iostream>
-#include <map>
-#include <string>
+#include <numeric>
+#include <sstream>
+#include <stdexcept>
+#include <string_view>
 #include <vector>
 
-/*****************
-*   CONSTANTS   *
-*****************/
+namespace valuecourse {
+inline constexpr std::int64_t maxComponent = 1000000;
+inline constexpr std::int64_t maxIntermediate = 2000000000000;
 
-const std::string PASS_LABEL = "pass";
-const std::string REVIEW_LABEL = "review";
-const std::string INPUT_CASES_LABEL = "input cases";
-const std::string VALIDATION_CHECKS_LABEL = "validation checks";
-const std::string DESIGN_NOTES_LABEL = "design notes";
-constexpr int INPUT_CASE_COUNT = 2;
-constexpr int VALIDATION_CHECK_COUNT = 2;
-constexpr int DESIGN_NOTE_COUNT = 1;
-constexpr int MINIMUM_PASSING_EVIDENCE = 0;
+class Fraction {
+    struct Normalized {
+        std::int64_t numerator;
+        std::int64_t denominator;
+    };
 
-/*************
-*   TYPES   *
-*************/
+    static Normalized normalize(std::int64_t numerator, std::int64_t denominator) {
+        if (numerator < -maxIntermediate || numerator > maxIntermediate ||
+            denominator < -maxIntermediate || denominator > maxIntermediate)
+            throw std::out_of_range("Intermediate component exceeds the bound.");
+        if (denominator == 0)
+            throw std::invalid_argument("A denominator cannot be zero.");
+        if (denominator < 0) {
+            numerator = -numerator;
+            denominator = -denominator;
+        }
+        const auto divisor = std::gcd(numerator, denominator);
+        numerator /= divisor;
+        denominator /= divisor;
+        if (numerator < -maxComponent || numerator > maxComponent ||
+            denominator > maxComponent)
+            throw std::out_of_range("Result exceeds the component bound.");
+        return {numerator, denominator};
+    }
 
-namespace {
-// Store one checklist outcome for the reference solution
-struct CheckResult {
-    std::string label;
-    bool passed;
+    explicit Fraction(Normalized value)
+        : numerator_(value.numerator), denominator_(value.denominator) {}
+    std::int64_t numerator_ = 0;
+    std::int64_t denominator_ = 1;
+
+public:
+    explicit Fraction(std::int64_t numerator = 0, std::int64_t denominator = 1) {
+        // TODO BEGIN constructFraction
+        if (numerator < -maxComponent || numerator > maxComponent ||
+            denominator < -maxComponent || denominator > maxComponent)
+            throw std::out_of_range("Input component exceeds the bound.");
+        const auto value = normalize(numerator, denominator);
+        numerator_ = value.numerator;
+        denominator_ = value.denominator;
+        // TODO END constructFraction
+    }
+
+    bool lessThan(const Fraction& right) const {
+        // TODO BEGIN compareFraction
+        return numerator_ * right.denominator_ < right.numerator_ * denominator_;
+        // TODO END compareFraction
+    }
+
+    Fraction add(const Fraction& right) const {
+        // TODO BEGIN addFraction
+        return Fraction(normalize(numerator_ * right.denominator_ +
+                                      right.numerator_ * denominator_,
+                                  denominator_ * right.denominator_));
+        // TODO END addFraction
+    }
+
+    Fraction multiply(const Fraction& right) const {
+        // TODO BEGIN multiplyFraction
+        return Fraction(normalize(numerator_ * right.numerator_,
+                                  denominator_ * right.denominator_));
+        // TODO END multiplyFraction
+    }
+
+    friend bool operator==(const Fraction& left, const Fraction& right) {
+        return left.numerator_ == right.numerator_ &&
+               left.denominator_ == right.denominator_;
+    }
+    friend bool operator<(const Fraction& left, const Fraction& right) {
+        return left.lessThan(right);
+    }
+    friend Fraction operator+(const Fraction& left, const Fraction& right) {
+        return left.add(right);
+    }
+    friend Fraction operator*(const Fraction& left, const Fraction& right) {
+        return left.multiply(right);
+    }
+    friend std::ostream& operator<<(std::ostream& output, const Fraction& value) {
+        return output << value.numerator_ << '/' << value.denominator_;
+    }
 };
 
-/*****************
-*   FUNCTIONS   *
-*****************/
+template <typename T>
+T chooseSmaller(T left, T right) {
+    // TODO BEGIN chooseSmaller
+    return right < left ? right : left;
+    // TODO END chooseSmaller
+}
 
-// Print checklist outcomes in display order
-void print_results(const std::vector<CheckResult>& results) {
-    // Print one status line for each checklist result
-    for (const auto& result : results) {
-        std::cout << result.label << ": "
-                  << (result.passed ? PASS_LABEL : REVIEW_LABEL) << '\n';
+std::int64_t parseComponent(std::string_view text) {
+    const bool negative = !text.empty() && text.front() == '-';
+    if (negative) text.remove_prefix(1);
+    if (text.empty()) throw std::invalid_argument("A component requires digits.");
+    std::int64_t magnitude = 0;
+    for (const char character : text) {
+        if (character < '0' || character > '9')
+            throw std::invalid_argument("A component requires signed decimal digits.");
+        const auto digit = static_cast<std::int64_t>(character - '0');
+        if (magnitude > (maxComponent - digit) / 10)
+            throw std::out_of_range("Input component exceeds the bound.");
+        magnitude = magnitude * 10 + digit;
     }
+    return negative ? -magnitude : magnitude;
 }
 
-// Build the evidence counts used by this reference checklist
-std::map<std::string, int> build_evidence() {
-    return {
-        {INPUT_CASES_LABEL, INPUT_CASE_COUNT},
-        {VALIDATION_CHECKS_LABEL, VALIDATION_CHECK_COUNT},
-        {DESIGN_NOTES_LABEL, DESIGN_NOTE_COUNT},
-    };
+Fraction parseFraction(std::string_view text) {
+    const auto slash = text.find('/');
+    if (slash == std::string_view::npos || text.find('/', slash + 1) !=
+                                           std::string_view::npos)
+        throw std::invalid_argument("A fraction requires numerator/denominator.");
+    const auto numerator = parseComponent(text.substr(0, slash));
+    const auto denominator = parseComponent(text.substr(slash + 1));
+    return Fraction(numerator, denominator);
 }
+} // namespace valuecourse
 
-// Convert evidence counts into checklist results
-std::vector<CheckResult>
-build_results(const std::map<std::string, int>& evidence) {
-    std::vector<CheckResult> results;
-
-    // Treat every positive evidence count as passing
-    for (const auto& [label, count] : evidence) {
-        results.push_back({label, count > MINIMUM_PASSING_EVIDENCE});
+int main(int argc, char* argv[]) {
+    if (argc != 1 && argc != 3) {
+        std::cerr << "Usage: main [LEFT_FRACTION RIGHT_FRACTION]\n";
+        return 2;
     }
-
-    return results;
-}
-
-// Sort checklist results alphabetically by label
-bool compare_results_by_label(const CheckResult& left,
-                              const CheckResult& right) {
-    return left.label < right.label;
-}
-} // namespace
-
-/**
- * @brief Print the Fraction Toolkit reference checklist
- *
- * @return Process exit code
- */
-int main() {
-    std::cout << "Fraction Toolkit reference solution\n";
-
-    const auto evidence = build_evidence();
-    auto results = build_results(evidence);
-
-    // Keep output order stable for review
-    std::sort(results.begin(), results.end(), compare_results_by_label);
-
-    print_results(results);
-    return 0;
+    try {
+        using valuecourse::Fraction;
+        const Fraction left = valuecourse::parseFraction(argc == 1 ? "1/2" : argv[1]);
+        const Fraction right = valuecourse::parseFraction(argc == 1 ? "2/3" : argv[2]);
+        const Fraction sum = left + right;
+        const Fraction product = left * right;
+        const Fraction smaller = valuecourse::chooseSmaller(left, right);
+        std::vector<Fraction> sorted{right, Fraction(), left};
+        std::sort(sorted.begin(), sorted.end());
+        std::ostringstream output;
+        output << "LEFT " << left << "\nRIGHT " << right
+               << "\nLESS " << std::boolalpha << (left < right)
+               << "\nSUM " << sum << "\nPRODUCT " << product
+               << "\nSMALLER " << smaller << "\nSORTED";
+        for (const auto& value : sorted) output << ' ' << value;
+        output << '\n';
+        if (!output) throw std::runtime_error("Could not render the result.");
+        std::cout << output.str() << std::flush;
+        if (!std::cout) throw std::runtime_error("Could not write the result.");
+        return 0;
+    } catch (const std::exception& error) {
+        std::cerr << "Rejected: " << error.what() << '\n';
+        return 1;
+    }
 }
