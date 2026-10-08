@@ -34,6 +34,9 @@ Canonical source repository: `CPP-Level-3`
 - Run `python3 verify-recursion-trace.py` for the optional saved-maze worksheet's
   three full worked traces, independent stack/reachability models, ordinary and
   sanitizer execution, blank learner records, printers and CMake targets.
+- Run `python3 verify-container-audit.py` for three optional inventory probes,
+  copied-view and ordering boundaries, completed/unfinished learner distinctions,
+  independent row models, ordinary/sanitizer execution and worksheet printers.
 - Run project-specific acceptance checks for every other folder before claiming
   readiness; the catalog mapping does not certify those implementations.
 

@@ -1,7 +1,4 @@
-#include <iostream>
-
-int main() {
-    std::cout << R"AUDIT_MD(# Container Tradeoff Audit: staff worked example
+# Container Tradeoff Audit: staff worked example
 
 Use this after the learner has recorded predictions and actual observations.
 The example describes the supplied Inventory Indexer reference. Check a saved
@@ -214,5 +211,3 @@ Library guarantees are supported by the standard working draft's
 [unordered requirements](https://eel.is/c++draft/unord.req).
 These living draft pages include newer APIs; this example uses only C++17/20
 facilities already present in the pack.
-)AUDIT_MD";
-}

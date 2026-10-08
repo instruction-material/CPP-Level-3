@@ -1,4 +1,4 @@
-name: Build and Debug checkpoint source
+name: C++ Level 3 native course source
 
 on:
   push:
@@ -56,3 +56,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi2-recursion-trace-source-ci
         run: python3 verify-recursion-trace.py
+      - name: Verify container audit against real inventory probes and independent row models
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi3-container-audit-source-ci
+        run: python3 verify-container-audit.py

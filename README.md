@@ -73,3 +73,20 @@ with an independent iterative frame-stack model and breadth-first reachability.
 It runs ordinary and sanitizer maze references and completed learner fixtures,
 distinguishes untouched status 3, checks input preservation and repeated solves
 in one process, and verifies both worksheet printers and CMake targets.
+
+## Optional CPPI3 container audit
+
+`CPPI3-Container-Tradeoff-Audit/starter/WORKSHEET.md` continues the saved Inventory
+Indexer. Predict three probes, record actual view and mutation results, then
+justify one container choice. The worksheet distinguishes insertion, key and
+sorted-name order, copies from live references, and complexity bounds from actual
+measurements. The separate `solution/WORKED-AUDIT.md` contains the checked staff
+example. Both original C++17 main.cpp files and CMake container_audit targets
+only print their corresponding documents.
+
+Run `python3 verify-container-audit.py` for actual ordinary/sanitizer calls on the
+reference, a completed learner fixture and the distinct untouched learner. An
+independent plain-row model checks all outputs, duplicate rejection, copied-view
+boundaries and fresh repeated cases. Both worksheet printers and CMake targets
+must reproduce their complete documents. The primary inventory source is
+unchanged; its separate verifier still checks allocation-failure rollback.

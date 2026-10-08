@@ -115,7 +115,8 @@ foreach(target maze_search_starter maze_search_solution)
 endforeach()
 
 # Worksheet printers preserve the documented strict-warning workflow.
-foreach(target trace_drill_starter trace_drill_solution)
+foreach(target trace_drill_starter trace_drill_solution
+               container_audit_starter container_audit_solution)
     target_compile_options(${target} PRIVATE
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
         $<$<CXX_COMPILER_ID:MSVC>:/WX>)
