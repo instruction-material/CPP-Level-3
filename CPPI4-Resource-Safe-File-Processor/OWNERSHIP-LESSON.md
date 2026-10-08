@@ -1,8 +1,5 @@
 # RAII and Single-Owner Resource Design
 
-Private lesson candidate. The examples and changed cases still require native
-acceptance before catalog integration.
-
 **Concept focus:** Name the object responsible for each resource and the scope
 that ends that responsibility. Continue the container ownership work from
 CPPI3 before writing a custom resource guard.

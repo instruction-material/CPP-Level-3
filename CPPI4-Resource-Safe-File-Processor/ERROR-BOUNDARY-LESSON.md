@@ -1,8 +1,5 @@
 # Validation, Exceptions, and Resource Boundaries
 
-Private lesson candidate. Native example execution and failure-path acceptance
-remain pending.
-
 **Concept focus:** Separate resource cleanup from the decision to accept a
 changed result. Identify what remains valid when an operation stops.
 
