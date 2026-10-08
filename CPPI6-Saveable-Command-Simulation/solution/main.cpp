@@ -1,90 +1,56 @@
-#include <algorithm>
+#include "command.h"
 #include <iostream>
-#include <map>
+#include <stdexcept>
 #include <string>
-#include <vector>
-
-/*****************
-*   CONSTANTS   *
-*****************/
-
-const std::string PASS_LABEL = "pass";
-const std::string REVIEW_LABEL = "review";
-const std::string INPUT_CASES_LABEL = "input cases";
-const std::string VALIDATION_CHECKS_LABEL = "validation checks";
-const std::string DESIGN_NOTES_LABEL = "design notes";
-constexpr int INPUT_CASE_COUNT = 2;
-constexpr int VALIDATION_CHECK_COUNT = 2;
-constexpr int DESIGN_NOTE_COUNT = 1;
-constexpr int MINIMUM_PASSING_EVIDENCE = 0;
-
-/*************
-*   TYPES   *
-*************/
-
 namespace {
-// Store one checklist outcome for the reference solution
-struct CheckResult {
-    std::string label;
-    bool passed;
-};
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-// Print checklist outcomes in display order
-void print_results(const std::vector<CheckResult>& results) {
-    // Print one status line for each checklist result
-    for (const auto& result : results) {
-        std::cout << result.label << ": "
-                  << (result.passed ? PASS_LABEL : REVIEW_LABEL) << '\n';
+enum class LineStatus { Line, End, TooLong, Failed };
+LineStatus boundedLine(std::istream& input, std::string& line) {
+    line.clear();
+    bool tooLong = false;
+    char c = 0;
+    while (input.get(c)) {
+        if (c == '\n') return tooLong ? LineStatus::TooLong : LineStatus::Line;
+        if (line.size() < rovercourse::maxCommandBytes) line.push_back(c);
+        else tooLong = true;
     }
-}
-
-// Build the evidence counts used by this reference checklist
-std::map<std::string, int> build_evidence() {
-    return {
-        {INPUT_CASES_LABEL, INPUT_CASE_COUNT},
-        {VALIDATION_CHECKS_LABEL, VALIDATION_CHECK_COUNT},
-        {DESIGN_NOTES_LABEL, DESIGN_NOTE_COUNT},
-    };
-}
-
-// Convert evidence counts into checklist results
-std::vector<CheckResult>
-build_results(const std::map<std::string, int>& evidence) {
-    std::vector<CheckResult> results;
-
-    // Treat every positive evidence count as passing
-    for (const auto& [label, count] : evidence) {
-        results.push_back({label, count > MINIMUM_PASSING_EVIDENCE});
-    }
-
-    return results;
-}
-
-// Sort checklist results alphabetically by label
-bool compare_results_by_label(const CheckResult& left,
-                              const CheckResult& right) {
-    return left.label < right.label;
+    if (input.bad()) return LineStatus::Failed;
+    if (tooLong) return LineStatus::TooLong;
+    return line.empty() ? LineStatus::End : LineStatus::Line;
 }
 } // namespace
-
-/**
- * @brief Print the Saveable Command-Driven Simulation reference checklist
- *
- * @return Process exit code
- */
-int main() {
-    std::cout << "Saveable Command-Driven Simulation reference solution\n";
-
-    const auto evidence = build_evidence();
-    auto results = build_results(evidence);
-
-    // Keep output order stable for review
-    std::sort(results.begin(), results.end(), compare_results_by_label);
-
-    print_results(results);
-    return 0;
+int main(int argc, char*[]) {
+    using namespace rovercourse;
+    if (argc != 1) { std::cerr << "Usage: rover\n"; return 2; }
+    try {
+        Rover rover;
+        std::string line;
+        while (true) {
+            const auto status = boundedLine(std::cin, line);
+            if (status == LineStatus::End) break;
+            if (status == LineStatus::Failed) throw std::runtime_error("Could not read commands.");
+            if (status == LineStatus::TooLong) { std::cerr << "Rejected: command exceeds 1024 bytes.\n"; continue; }
+            if (line.find_first_not_of(" \t") == std::string::npos) continue;
+            Parsed parsed;
+            std::string error;
+            if (!parseCommand(line, parsed, error)) { std::cerr << "Rejected: " << error << '\n'; continue; }
+            if (parsed.verb == Verb::Quit) break;
+            try {
+                auto command = makeCommand(parsed);
+                Rover candidate = rover;
+                const Result result = command->execute(candidate);
+                if (result.ok) rover.swap(candidate);
+                if (result.ok) std::cout << result.message;
+                else std::cerr << "Rejected: " << result.message << '\n';
+            } catch (const std::exception& failure) {
+                std::cerr << "Rejected: " << failure.what() << '\n';
+            }
+            std::cout.flush(); std::cerr.flush();
+            if (!std::cout || !std::cerr) throw std::runtime_error("Could not write command result.");
+        }
+        std::cout.flush(); std::cerr.flush();
+        if (!std::cout || !std::cerr) throw std::runtime_error("Could not write command result.");
+        return 0;
+    } catch (const std::exception& failure) {
+        std::cerr << "Failed: " << failure.what() << '\n'; return 1;
+    }
 }

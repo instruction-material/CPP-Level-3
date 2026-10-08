@@ -141,3 +141,20 @@ complete/changed teaching programs, and check all four Make packs and preserved
 CMake names. Ordinary/sanitizer C++17/20 acceptance is separate from the
 documented C++20 learner build path. These gates cover executed cases; source
 publication does not validate unseen learner work or establish site deployment.
+
+## CPPI6 rover capstone and optional state review
+
+The required Saveable Command-Driven Simulation is an eight-file C++20 rover
+pack with five marked implementation tasks: parsing, transitions, movement,
+bounded recursive routes and transactional snapshot decoding. Complete input,
+command ownership, graph linking, safe-save infrastructure and full neutral
+teaching are supplied. The separate optional State Review has a five-file
+learner pack and six-file reference with a worked record. It compares the same
+four-phase table through an enum and actual derived State objects.
+
+Use `verify-rover-simulation.py`, `verify-state-review.py`,
+`verify-cppi6-lessons.py` and `verify-cppi6-builds.py` for actual native behavioral,
+independent model, lifetime, changed-example and Make/CMake checks. The complete
+source workflow preserves the earlier sixteen native groups and runs the four
+capstone groups in a separate bounded job. Site import/catalog acceptance and
+production activation are separate from source verification.

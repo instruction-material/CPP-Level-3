@@ -69,10 +69,22 @@ add_course_executable(fraction_toolkit_starter CPPI5-Fraction-Toolkit/starter/ma
 add_course_executable(fraction_toolkit_solution CPPI5-Fraction-Toolkit/solution/main.cpp)
 add_course_executable(template_drill_starter CPPI5-Template-Error-Reading-Drill/starter/main.cpp)
 add_course_executable(template_drill_solution CPPI5-Template-Error-Reading-Drill/solution/main.cpp)
-add_course_executable(command_sim_starter CPPI6-Saveable-Command-Simulation/starter/main.cpp)
-add_course_executable(command_sim_solution CPPI6-Saveable-Command-Simulation/solution/main.cpp)
-add_course_executable(state_review_starter CPPI6-Enum-vs-Polymorphic-State-Review/starter/main.cpp)
-add_course_executable(state_review_solution CPPI6-Enum-vs-Polymorphic-State-Review/solution/main.cpp)
+add_course_executable(command_sim_starter
+    CPPI6-Saveable-Command-Simulation/starter/main.cpp
+    CPPI6-Saveable-Command-Simulation/starter/rover.cpp
+    CPPI6-Saveable-Command-Simulation/starter/command.cpp
+    CPPI6-Saveable-Command-Simulation/starter/storage.cpp)
+add_course_executable(command_sim_solution
+    CPPI6-Saveable-Command-Simulation/solution/main.cpp
+    CPPI6-Saveable-Command-Simulation/solution/rover.cpp
+    CPPI6-Saveable-Command-Simulation/solution/command.cpp
+    CPPI6-Saveable-Command-Simulation/solution/storage.cpp)
+add_course_executable(state_review_starter
+    CPPI6-Enum-vs-Polymorphic-State-Review/starter/main.cpp
+    CPPI6-Enum-vs-Polymorphic-State-Review/starter/state_review.cpp)
+add_course_executable(state_review_solution
+    CPPI6-Enum-vs-Polymorphic-State-Review/solution/main.cpp
+    CPPI6-Enum-vs-Polymorphic-State-Review/solution/state_review.cpp)
 
 # The setup checkpoint establishes the course's documented C++20 path.
 set_target_properties(build_debug_starter build_debug_solution PROPERTIES
@@ -140,4 +152,19 @@ foreach(target fraction_toolkit_starter fraction_toolkit_solution
     target_compile_options(${target} PRIVATE
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wconversion -Wsign-conversion -Werror>
         $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()
+
+# The capstone composes a C++20 multi-file rover and narrow command interface.
+set_target_properties(command_sim_starter command_sim_solution PROPERTIES
+    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+foreach(target command_sim_starter command_sim_solution)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>)
+endforeach()
+
+set_target_properties(state_review_starter state_review_solution PROPERTIES
+    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+foreach(target state_review_starter state_review_solution)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>)
 endforeach()
