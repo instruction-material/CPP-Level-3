@@ -1,15 +1,33 @@
 #include <iostream>
 #include <string>
-#include <vector>
 
-int main() {
-    std::cout << "Template Error Reading Drill starter\n";
-    std::vector<std::string> notes{"read the prompt", "fill the TODOs"};
+struct Score {
+    int value;
+    // TODO: Add the conventional ordering operation after reading the diagnostic.
+};
 
-    // TODO: Replace this placeholder with the project-specific implementation.
-    for (const auto& note : notes) {
-        std::cout << "- " << note << '\n';
+template <typename T>
+T chooseSmaller(T left, T right) {
+    return right < left ? right : left;
+}
+
+int main(int argc, char*[]) {
+    if (argc != 1) {
+        std::cerr << "Usage: main\n";
+        return 2;
     }
-
+#ifdef CPPI5_TRIGGER_TEMPLATE_ERROR
+    const auto smaller = chooseSmaller(Score{84}, Score{59});
+    std::cout << "score " << smaller.value << '\n';
+#else
+    std::cout << "number " << chooseSmaller(7, 3) << '\n';
+    std::cout << "text " << chooseSmaller(std::string("pear"), std::string("apple"))
+              << '\n';
+#endif
+    std::cout.flush();
+    if (!std::cout) {
+        std::cerr << "Could not write the result.\n";
+        return 1;
+    }
     return 0;
 }

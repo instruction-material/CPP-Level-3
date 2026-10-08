@@ -131,3 +131,13 @@ foreach(target file_processor_starter file_processor_solution
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wconversion -Wsign-conversion -Werror>
         $<$<CXX_COMPILER_ID:MSVC>:/WX>)
 endforeach()
+
+# CPPI5 retains its four public names and the documented strict C++20 path.
+foreach(target fraction_toolkit_starter fraction_toolkit_solution
+               template_drill_starter template_drill_solution)
+    set_target_properties(${target} PROPERTIES
+        CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wconversion -Wsign-conversion -Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()
