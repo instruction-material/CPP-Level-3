@@ -17,7 +17,7 @@ text apple
 
 The ordinary worked copy produces the same output. Wrong argument count returns
 2 with `Usage: main` on stderr and no stdout. A failed final stdout flush returns
-1. The ordinary program is already working; completing this drill means
+`1`. The ordinary program is already working; completing this drill means
 triggering, interpreting and fixing the deliberately enabled case.
 
 ## Predict and enable the controlled failure
@@ -32,7 +32,7 @@ make CXX=c++ diagnostic
 ```
 
 The `CPPI5_TRIGGER_TEMPLATE_ERROR` macro enables a call with `Score{84}` and
-`Score{59}`. The learner must fail compilation because `<` cannot compare two
+`Score{59}`. The enabled case fails compilation because `<` cannot compare two
 Scores. Ordinary `main` remains a separate executable. A compiler diagnostic is
 not a runtime exception and `try`/`catch` cannot repair an ill-formed program.
 
