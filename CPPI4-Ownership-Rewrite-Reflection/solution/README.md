@@ -1,8 +1,4 @@
-#include <iostream>
-
-int main(const int argc, char*[]) {
-    if (argc != 1) { std::cerr << "Usage: main\n"; return 2; }
-    std::cout << R"OWNERSHIP_MD(# Ownership Rewrite Reflection: Worked Reference
+# Ownership Rewrite Reflection: Worked Reference
 
 Staff comparison follows the learner attempt. The complete published Level 2
 program is supplied as `ownership-reference.cpp`, byte-identical to the source
@@ -53,7 +49,3 @@ partially writing each representation, and checks ordinary and sanitizer builds
 in C++17 and C++20. Worksheet printers must reproduce the complete learner and
 worked documents exactly. A passing executed case remains evidence for that
 case rather than a guarantee for every possible lifetime.
-)OWNERSHIP_MD";
-    std::cout.flush();
-    return std::cout ? 0 : 1;
-}

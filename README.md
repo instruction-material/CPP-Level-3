@@ -90,3 +90,30 @@ independent plain-row model checks all outputs, duplicate rejection, copied-view
 boundaries and fresh repeated cases. Both worksheet printers and CMake targets
 must reproduce their complete documents. The primary inventory source is
 unchanged; its separate verifier still checks allocation-failure rollback.
+
+## CPPI4 resource-safe publication and optional ownership reflection
+
+`CPPI4-Resource-Safe-File-Processor` reads bounded tab-separated score records,
+validates every row before preparing output, and publishes a checked report by
+renaming a staged file. Its learner has four explicit unfinished tasks; its
+reference performs the actual operation. Both include `scores.tsv`, a strict
+C++20 Makefile and the full neutral brief. The accompanying ownership and error
+boundary lessons contain complete small programs with prediction exercises.
+
+The optional `CPPI4-Ownership-Rewrite-Reflection/starter/NOTES.md` continues the
+saved completed file processor. Read a concrete Level 2 manual allocation, make
+a separate automatic-ownership comparison, and explain the saved application's
+resource lifetimes and publication boundary. The worked staff record remains
+separate. Reading the worksheet imports no second application. The preserved
+CMake targets and main.cpp wrappers print their respective documents exactly.
+
+Run `python3 verify-file-processor.py`, `python3 verify-ownership-worksheet.py`,
+`python3 verify-cppi4-lessons.py` and `python3 verify-cppi4-builds.py` on Linux.
+These gates test reference and completed-learner report bytes against an
+independent model, distinguish untouched learner failure, exercise actual
+partial writes and failed rename with prior output preservation, inspect
+ownership exceptions, and check normal/changed lesson examples. Native checks
+use strict C++17/20 ordinary and sanitizer builds; all four Make packs and
+preserved CMake targets are checked separately. Each subprocess has a bounded
+lifetime and cleanup. These checks cover their executed cases; they do not
+certify unrelated course packs, crash durability or concurrent path changes.

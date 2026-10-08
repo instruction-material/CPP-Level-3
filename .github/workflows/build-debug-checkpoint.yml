@@ -16,7 +16,7 @@ concurrency:
 jobs:
   native:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -61,3 +61,27 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           CLASSES_AUDIT_PARENT_TASK_ID: cppi3-container-audit-source-ci
         run: python3 verify-container-audit.py
+      - name: Verify resource-safe reports, bounded input and real publication failures
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi4-file-processor-source-ci
+        run: python3 verify-file-processor.py
+      - name: Verify ownership worksheet output and real post-acquisition exceptions
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi4-ownership-source-ci
+        run: python3 verify-ownership-worksheet.py
+      - name: Verify ownership and error-boundary lesson programs and changed cases
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi4-lessons-source-ci
+        run: python3 verify-cppi4-lessons.py
+      - name: Verify all four CPPI4 Make packs and preserved CMake targets
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          CXX: g++
+          CLASSES_AUDIT_PARENT_TASK_ID: cppi4-builds-source-ci
+        run: python3 verify-cppi4-builds.py

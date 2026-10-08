@@ -121,3 +121,13 @@ foreach(target trace_drill_starter trace_drill_solution
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Werror>
         $<$<CXX_COMPILER_ID:MSVC>:/WX>)
 endforeach()
+
+# CPPI4 keeps four public target names and the strict C++20 project path.
+foreach(target file_processor_starter file_processor_solution
+               ownership_rewrite_starter ownership_rewrite_solution)
+    set_target_properties(${target} PROPERTIES
+        CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(${target} PRIVATE
+        $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wconversion -Wsign-conversion -Werror>
+        $<$<CXX_COMPILER_ID:MSVC>:/WX>)
+endforeach()
