@@ -57,7 +57,7 @@ class Scanner {
                 continue;
             }
 
-            // TODO: handle numbers, quoted strings, comments, and unknown tokens.
+            // TODO: handle numbers, quoted strings, and comments.
             tokens.push_back(
                 {TokenType::Unknown, std::string(1, current), line_});
         }
@@ -105,8 +105,9 @@ class Scanner {
 int main() {
     const std::string source = "ADD task \"write parser\" PRIORITY 2\n"
                                "DONE task\n"
-                               "# comment ignored by the finished scanner\n"
-                               "QUERY task?\n";
+                               "# comment ignored by the scanner\n"
+                               "QUERY task?\n"
+                               "BAD @\n";
 
     Scanner scanner(source);
     for (const Token& token : scanner.scan()) {
